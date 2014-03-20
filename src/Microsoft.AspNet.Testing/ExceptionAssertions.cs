@@ -23,19 +23,6 @@ namespace Microsoft.AspNet.Testing
         }
 
         /// <summary>
-        /// Verifies that an exception of the given type (or optionally a derived type) is thrown.
-        /// </summary>
-        /// <typeparam name="TException">The type of the exception expected to be thrown</typeparam>
-        /// <param name="testCode">A delegate to the code to be tested</param>
-        /// <returns>The exception that was thrown, when successful</returns>
-        /// <exception cref="ThrowsException">Thrown when an exception was not thrown, or when an exception of the incorrect type is thrown</exception>
-        public static async Task<TException> ThrowsAsync<TException>(Func<Task> testCode)
-            where TException : Exception
-        {
-            return VerifyException<TException>(await RecordExceptionAsync(testCode));
-        }
-
-        /// <summary>
         /// Verifies that an exception of the given type is thrown.
         /// Also verifies that the exception message matches.
         /// </summary>
@@ -64,7 +51,10 @@ namespace Microsoft.AspNet.Testing
         public static async Task<TException> ThrowsAsync<TException>(Func<Task> testCode, string exceptionMessage)
             where TException : Exception
         {
-            var ex = await ThrowsAsync<TException>(testCode);
+            // The 'testCode' Task might execute asynchronously in a different thread making it hard to enforce the thread culture.
+            // The correct way to verify exception messages in such a scenario would be to run the task synchronously inside of a 
+            // culture enforced block.
+            var ex = await Assert.ThrowsAsync<TException>(testCode);
             VerifyExceptionMessage(ex, exceptionMessage);
             return ex;
         }
@@ -113,7 +103,7 @@ namespace Microsoft.AspNet.Testing
         /// <exception>Thrown when an exception was not thrown, or when an exception of the incorrect type is thrown</exception>
         public static async Task<ArgumentException> ThrowsArgumentAsync(Func<Task> testCode, string paramName, string exceptionMessage)
         {
-            var ex = await ThrowsAsync<ArgumentException>(testCode);
+            var ex = await Assert.ThrowsAsync<ArgumentException>(testCode);
             if (paramName != null)
             {
                 Assert.Equal(paramName, ex.ParamName);
@@ -186,27 +176,6 @@ namespace Microsoft.AspNet.Testing
                 using (new CultureReplacer())
                 {
                     testCode();
-                }
-                return null;
-            }
-            catch (Exception exception)
-            {
-                return UnwrapException(exception);
-            }
-        }
-
-        // We've re-implemented all the xUnit.net Throws code so that we can get this 
-        // updated implementation of RecordException which silently unwraps any instances
-        // of AggregateException. In addition to unwrapping exceptions, this method ensures 
-        // that tests are executed in with a known set of Culture and UICulture. This prevents
-        // tests from failing when executed on a non-English machine. 
-        private static async Task<Exception> RecordExceptionAsync(Func<Task> testCode)
-        {
-            try
-            {
-                using (new CultureReplacer())
-                {
-                    await testCode();
                 }
                 return null;
             }
