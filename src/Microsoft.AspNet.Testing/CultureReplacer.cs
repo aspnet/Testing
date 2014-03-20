@@ -12,9 +12,7 @@ namespace Microsoft.AspNet.Testing
         private static readonly CultureInfo _defaultCulture = new CultureInfo(_defaultCultureName);
         private readonly CultureInfo _originalCulture;
         private readonly CultureInfo _originalUICulture;
-#if NET45
         private readonly long _threadId;
-#endif
 
         // Culture => Formatting of dates/times/money/etc, defaults to en-GB because en-US is the same as InvariantCulture
         // We want to be able to find issues where the InvariantCulture is used, but a specific culture should be.
@@ -24,9 +22,7 @@ namespace Microsoft.AspNet.Testing
         {
             _originalCulture = CultureInfo.DefaultThreadCurrentCulture;
             _originalUICulture = CultureInfo.DefaultThreadCurrentUICulture;
-#if NET45
             _threadId = Thread.CurrentThread.ManagedThreadId;
-#endif
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(culture);
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(uiCulture);
         }
@@ -65,10 +61,8 @@ namespace Microsoft.AspNet.Testing
         {
             if (disposing)
             {
-#if NET45
                 Assert.True(Thread.CurrentThread.ManagedThreadId == _threadId,
                     "The current thread is not the same as the thread invoking the constructor. This should never happen.");
-#endif
                 CultureInfo.DefaultThreadCurrentCulture = _originalCulture;
                 CultureInfo.DefaultThreadCurrentUICulture = _originalUICulture;
             }
