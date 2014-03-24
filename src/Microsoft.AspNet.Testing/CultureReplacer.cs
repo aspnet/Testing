@@ -28,7 +28,7 @@ namespace Microsoft.AspNet.Testing
         }
 
         /// <summary>
-        /// The name of the culture that is used as the default value for Thread.CurrentCulture when CultureReplacer is used.
+        /// The name of the culture that is used as the default value for CultureInfo.DefaultThreadCurrentCulture when CultureReplacer is used.
         /// </summary>
         public static string DefaultCultureName
         {
@@ -36,7 +36,7 @@ namespace Microsoft.AspNet.Testing
         }
 
         /// <summary>
-        /// The name of the culture that is used as the default value for Thread.UICurrentCulture when CultureReplacer is used.
+        /// The name of the culture that is used as the default value for CultureInfo.DefaultThreadCurrentUICulture when CultureReplacer is used.
         /// </summary>
         public static string DefaultUICultureName
         {
@@ -44,7 +44,7 @@ namespace Microsoft.AspNet.Testing
         }
 
         /// <summary>
-        /// The culture that is used as the default value for Thread.CurrentCulture when CultureReplacer is used.
+        /// The culture that is used as the default value for CultureInfo.DefaultThreadCurrentCulture when CultureReplacer is used.
         /// </summary>
         public static CultureInfo DefaultCulture
         {
