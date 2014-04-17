@@ -19,10 +19,12 @@ namespace Xunit.KRunner
         private readonly IApplicationEnvironment _environment;
         private readonly IFileMonitor _fileMonitor;
 
-        public Program(IApplicationEnvironment environment, IFileMonitor fileMonitor)
+        public Program(IServiceProvider serviceProvider)
         {
-            _environment = environment;
-            _fileMonitor = fileMonitor;
+            HostServiceProvider.Current = serviceProvider;
+
+            _environment = (IApplicationEnvironment)serviceProvider.GetService(typeof(IApplicationEnvironment));
+            _fileMonitor = (IFileMonitor)serviceProvider.GetService(typeof(IFileMonitor));
         }
 
         public int Main(string[] args)
