@@ -5,7 +5,11 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Framework.ConfigurationModel;
+using Microsoft.Framework.DependencyInjection;
+using Microsoft.Framework.DependencyInjection.Fallback;
 using Microsoft.Framework.Runtime;
+using Xunit.Abstractions;
 using Xunit.ConsoleClient;
 using Xunit.Sdk;
 #if !NET45
@@ -21,11 +25,13 @@ namespace Xunit.KRunner
         readonly ConcurrentDictionary<string, ExecutionSummary> completionMessages = new ConcurrentDictionary<string, ExecutionSummary>();
         private readonly IApplicationEnvironment _environment;
         private readonly IFileMonitor _fileMonitor;
+        private readonly IServiceProvider _serviceProvider;
 
-        public Program(IApplicationEnvironment environment, IFileMonitor fileMonitor)
+        public Program(IApplicationEnvironment environment, IFileMonitor fileMonitor, IServiceProvider serviceProvider)
         {
             _environment = environment;
             _fileMonitor = fileMonitor;
+            _serviceProvider = serviceProvider;
         }
 
         public int Main(string[] args)
@@ -34,7 +40,7 @@ namespace Xunit.KRunner
             Console.WriteLine("Copyright (C) 2014 Outercurve Foundation, Microsoft Open Technologies, Inc.");
             Console.WriteLine();
 
-            if (args.Length > 0 && args[0] == "-?")
+            if (args.Length == 1 && args[0] == "-?")
             {
                 PrintUsage();
                 return 1;
@@ -59,9 +65,22 @@ namespace Xunit.KRunner
 
             try
             {
-                var commandLine = CommandLine.Parse(args);
+                var config = new Configuration();
+                config.AddEnvironmentVariables();
+                config.Add(CommandLine.Parse(args));
+                var serviceCollection = new ServiceCollection();
+                serviceCollection.Add(TestingServices.GetDefaultServices(config));
+                var services = serviceCollection.BuildServiceProvider(_serviceProvider);
 
-                int failCount = RunProject(commandLine.TeamCity, commandLine.ParallelizeTestCollections, commandLine.MaxParallelThreads);
+                var context = new TestingContext()
+                {
+                    Services = services,
+                    Configuration = config,
+                    VisitorName = config.Get("visitor") ?? config.Get("XUNIT_TEST_VISITOR"),
+                    ApplicationName = _environment.ApplicationName
+                };
+
+                int failCount = RunProject(context);
 
                 return failCount;
             }
@@ -109,11 +128,11 @@ namespace Xunit.KRunner
             Console.WriteLine("  -teamcity              : forces TeamCity mode (normally auto-detected)");
         }
 
-        int RunProject(bool teamcity, bool parallelizeTestCollections, int maxThreadCount)
+        int RunProject(TestingContext context)
         {
-            var consoleLock = new object();
+            EnsureVisitor(context);
 
-            ExecuteAssembly(consoleLock, _environment.ApplicationName, teamcity, parallelizeTestCollections, maxThreadCount);
+            ExecuteAssembly(context);
 
             if (completionMessages.Count > 0)
             {
@@ -137,35 +156,59 @@ namespace Xunit.KRunner
             return failed ? 1 : completionMessages.Values.Sum(summary => summary.Failed);
         }
 
-        XmlTestExecutionVisitor CreateVisitor(object consoleLock, bool teamCity)
+        private void EnsureVisitor(TestingContext context)
         {
-            if (teamCity)
-                return new TeamCityVisitor(() => cancel);
-
-            return new StandardOutputVisitor(consoleLock, () => cancel, completionMessages);
+            if (context.Visitor == null)
+                context.Visitor = CreateVisitor(context);
         }
 
-        void ExecuteAssembly(object consoleLock, string assemblyName, bool teamCity, bool parallelizeTestCollections, int maxThreadCount)
+        IMessageSink CreateVisitor(TestingContext context)
+        {
+            if (context.Services.HasService<IMessageSink>())
+                return context.Services.GetService<IMessageSink>();
+
+            if (context.Services.HasService<IMessageSinkFactory>())
+                return context.Services.GetService<IMessageSinkFactory>()
+                    .CreateMessageSink(context);
+
+            if (context.VisitorName == null)
+                return CreateDefaultVisitor(context);
+
+            return context.Services.GetService<IMessageSinkManager>()
+                .GetMessageSinkFactory(context.VisitorName)
+                .CreateMessageSink(context);
+        }
+
+        IMessageSink CreateDefaultVisitor(TestingContext context)
+        {
+            if (context.Configuration.Get("TEAMCITY_PROJECT_NAME", s => !String.IsNullOrEmpty(s)))
+                return new TeamCityVisitor(() => cancel);
+
+            return new StandardOutputVisitor(context.ConsoleLock, () => cancel, completionMessages);
+        }
+
+        void ExecuteAssembly(TestingContext context)
         {
             if (cancel)
                 return;
 
             try
             {
-                var name = new AssemblyName(assemblyName);
+                var name = new AssemblyName(context.ApplicationName);
                 var assembly = Reflector.Wrap(Assembly.Load(name));
                 var framework = new XunitTestFramework();
                 var discoverer = framework.GetDiscoverer(assembly);
                 var executor = framework.GetExecutor(name);
-                var discoveryVisitor = new TestDiscoveryVisitor();
 
-                discoverer.Find(includeSourceInformation: false, messageSink: discoveryVisitor, options: new TestFrameworkOptions());
-                discoveryVisitor.Finished.WaitOne();
+                using (var visitor = new ProxyMessageSink(context.Visitor))
+                {
+                    discoverer.Find(includeSourceInformation: false, messageSink: visitor, options: new TestFrameworkOptions());
+                    visitor.DiscoveryComplete.WaitOne();
 
-                var executionOptions = new XunitExecutionOptions { DisableParallelization = !parallelizeTestCollections, MaxParallelThreads = maxThreadCount };
-                var resultsVisitor = CreateVisitor(consoleLock, teamCity);
-                executor.RunTests(discoveryVisitor.TestCases, resultsVisitor, executionOptions);
-                resultsVisitor.Finished.WaitOne();
+                    var executionOptions = new XunitExecutionOptions { DisableParallelization = !context.Parallelize, MaxParallelThreads = context.MaxThreads };
+                    executor.RunTests(visitor.TestCases, visitor, executionOptions);
+                    visitor.Finished.WaitOne();
+                }
             }
             catch (Exception ex)
             {

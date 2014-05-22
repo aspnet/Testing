@@ -1,12 +1,14 @@
 {
   "dependencies": {
-    "Xunit.KRunner": ""
+    "Xunit.KRunner": "",
+    "Xunit.KRunner.AppVeyor": "0.1-alpha-*"
   },
   "commands": {
     "test": "Xunit.KRunner"
   },
   "configurations": {
-    "net45": {},
-    "k10": {}
+    "net45": {
+      "dependencies": { }
+    }
   }
 }

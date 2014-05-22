@@ -3,10 +3,11 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Framework.ConfigurationModel;
 
 namespace Xunit.ConsoleClient
 {
-    public class CommandLine
+    public class CommandLine : BaseConfigurationSource
     {
         readonly Stack<string> arguments = new Stack<string>();
 
@@ -15,16 +16,8 @@ namespace Xunit.ConsoleClient
             for (int i = args.Length - 1; i >= 0; i--)
                 arguments.Push(args[i]);
 
-            TeamCity = Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null;
-            ParallelizeTestCollections = true;
             Parse();
         }
-
-        public int MaxParallelThreads { get; set; }
-
-        public bool ParallelizeTestCollections { get; set; }
-
-        public bool TeamCity { get; protected set; }
 
         static void GuardNoOptionValue(KeyValuePair<string, string> option)
         {
@@ -44,46 +37,57 @@ namespace Xunit.ConsoleClient
                 var option = PopOption(arguments);
                 var optionName = option.Key.ToLowerInvariant();
 
-                if (!optionName.StartsWith("-"))
-                    throw new ArgumentException(String.Format("unknown command line option: {0}", option.Key));
-
-                if (optionName == "-maxthreads")
+                switch (optionName)
                 {
-                    if (option.Value == null)
-                        throw new ArgumentException("missing argument for -maxthreads");
+                    case "-maxthreads":
+                        if (option.Value == null)
+                            throw new ArgumentException("missing argument for -maxthreads");
 
-                    int threadValue;
-                    if (!Int32.TryParse(option.Value, out threadValue) || threadValue < 0)
-                        throw new ArgumentException("incorrect argument value for -maxthreads");
+                        int threadValue;
+                        if (!Int32.TryParse(option.Value, out threadValue) || threadValue < 0)
+                            throw new ArgumentException("incorrect argument value for -maxthreads");
 
-                    MaxParallelThreads = threadValue;
-                }
-                else if (optionName == "-parallel")
-                {
-                    if (option.Value == null)
-                        throw new ArgumentException("missing argument for -parallel");
+                        if (Data.ContainsKey("maxthreads"))
+                            throw new ArgumentException("-maxthreads specified more than once");
 
-                    ParallelismOption parallelismOption;
-                    if (!Enum.TryParse<ParallelismOption>(option.Value, out parallelismOption))
-                        throw new ArgumentException("incorrect argument value for -parallel");
+                        Data.Add("maxthreads", option.Value);
+                        break;
 
-                    switch (parallelismOption)
-                    {
-                        case ParallelismOption.all:
-                        case ParallelismOption.collections:
-                            ParallelizeTestCollections = true;
-                            break;
+                    case "-parallel":
+                        if (option.Value == null)
+                            throw new ArgumentException("missing argument for -parallel");
 
-                        case ParallelismOption.none:
-                        default:
-                            ParallelizeTestCollections = false;
-                            break;
-                    }
-                }
-                else if (optionName == "-teamcity")
-                {
-                    GuardNoOptionValue(option);
-                    TeamCity = true;
+                        ParallelismOption parallelismOption;
+                        if (!Enum.TryParse<ParallelismOption>(option.Value, out parallelismOption))
+                            throw new ArgumentException("incorrect argument value for -parallel");
+
+                        if (Data.ContainsKey("parallel"))
+                            throw new ArgumentException("-parallel specified more than once");
+
+                        Data.Add("parallel", option.Value);
+                        break;
+
+                    case "-teamcity":
+                        GuardNoOptionValue(option);
+
+                        if (Data.ContainsKey("teamcity"))
+                            throw new ArgumentException("-teamcity specified more than once");
+
+                        Data.Add("teamcity", "true");
+                        break;
+
+                    case "-visitor":
+                        if (option.Value == null)
+                            throw new ArgumentException("missing argument for -visitor");
+
+                        if (Data.ContainsKey("visitor"))
+                            throw new ArgumentException("-visitor specified more than once");
+
+                        Data.Add("visitor", option.Value);
+                        break;
+
+                    default:
+                        throw new ArgumentException(String.Format("unknown command line option: {0}", option.Key));
                 }
             }
         }

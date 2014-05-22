@@ -1,0 +1,7 @@
+test: off # this turns of AppVeyor automatic searching for test-assemblies, not the actual testing
+build_script:
+  - build.cmd
+environment:
+  XUNIT_TEST_VISITOR: Xunit.KRunner.AppVeyor
+artifacts:
+  - path: artifacts/build/Xunit.KRunner.*.nupkg
