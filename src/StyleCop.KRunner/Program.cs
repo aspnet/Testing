@@ -14,7 +14,9 @@ namespace StyleCop.KRunner
 
         public static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("StyleCop.KRunner - A StyleCop commandline runner");
+            Console.ResetColor();
 
             if (args.Length == 0)
             {
@@ -32,11 +34,11 @@ namespace StyleCop.KRunner
             }
 
             var runner = new StyleCopConsole(
-                settings: null, 
-                writeResultsCache: 
-                false, 
-                outputFile: null, 
-                addInPaths: null, 
+                settings: null,
+                writeResultsCache:
+                false,
+                outputFile: null,
+                addInPaths: null,
                 loadFromDefaultPath: true); // Loads rules next to StyleCop.dll in the file system.
 
             var projectDirectory = Path.GetDirectoryName(projectFile);
@@ -70,9 +72,21 @@ namespace StyleCop.KRunner
                 runner.ViolationEncountered -= Runner_ViolationEncountered;
             }
 
+            if (_violations.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+
             Console.WriteLine();
+            Console.WriteLine("Finished Processing: {0}", projectFile);
             Console.WriteLine("{0} errors found.", _violations.Count);
             Console.WriteLine();
+
+            Console.ResetColor();
         }
 
         // Performs an ascending directory search starting at the project directory
