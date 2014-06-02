@@ -12,7 +12,7 @@ namespace StyleCop.KRunner
     {
         private static readonly List<Violation> _violations = new List<Violation>();
 
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("StyleCop.KRunner - A StyleCop commandline runner");
@@ -23,14 +23,14 @@ namespace StyleCop.KRunner
                 Console.WriteLine("Usage:");
                 Console.WriteLine("\tStyleCop.KRunner <path/to/project.json>");
                 Console.WriteLine();
-                return;
+                return -1;
             }
 
             var projectFile = args[0];
             if (!File.Exists(projectFile))
             {
                 Console.WriteLine("File '{0}' does not exist.", Path.GetFullPath(projectFile));
-                return;
+                return -2;
             }
 
             var runner = new StyleCopConsole(
@@ -87,6 +87,8 @@ namespace StyleCop.KRunner
             Console.WriteLine();
 
             Console.ResetColor();
+
+            return _violations.Count;
         }
 
         // Performs an ascending directory search starting at the project directory
