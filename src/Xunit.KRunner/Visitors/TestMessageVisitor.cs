@@ -319,44 +319,4 @@ namespace Xunit
             return true;
         }
     }
-
-    /// <summary>
-    /// An implementation of <see cref="IMessageSink" /> that provides several Visit methods that
-    /// can provide access to specific message types without the burden of casting. It also record
-    /// when it sees a completion message, and sets the <see cref="Finished" /> event appropriately.
-    /// </summary>
-    /// <typeparam name="TCompleteMessage">The type of the completion message.</typeparam>
-    public class TestMessageVisitor<TCompleteMessage> : TestMessageVisitor
-        where TCompleteMessage : IMessageSinkMessage
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TestMessageVisitor{TCompleteMessage}"/> class.
-        /// </summary>
-        public TestMessageVisitor()
-        {
-            Finished = new ManualResetEvent(initialState: false);
-        }
-
-        /// <summary>
-        /// This event is trigged when the completion message has been seen.
-        /// </summary>
-        public ManualResetEvent Finished { get; private set; }
-
-        /// <inheritdoc/>
-        public override void Dispose()
-        {
-            ((IDisposable)Finished).Dispose();
-        }
-
-        /// <inheritdoc/>
-        public override bool OnMessage(IMessageSinkMessage message)
-        {
-            var result = base.OnMessage(message);
-
-            if (message is TCompleteMessage)
-                Finished.Set();
-
-            return result;
-        }
-    }
 }

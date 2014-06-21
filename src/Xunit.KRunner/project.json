@@ -3,7 +3,10 @@
   "dependencies": {
     "Microsoft.Framework.Runtime.Interfaces": "1.0.0-*",
     "xunit.assert": "2.0.0-aspnet-*",
-    "xunit.execution": "2.0.0-aspnet-*"
+    "xunit.execution": "2.0.0-aspnet-*",
+    "xunit.abstractions": "2.0.0-aspnet-*",
+    "Microsoft.Framework.ConfigurationModel": "0.1-alpha-*",
+    "Microsoft.Framework.DependencyInjection": "0.1-alpha-*"
   },
   "configurations": {
     "net45": {},

@@ -6,7 +6,7 @@ using Xunit.Abstractions;
 
 namespace Xunit
 {
-    public class XmlTestExecutionVisitor : TestMessageVisitor<ITestAssemblyFinished>
+    public class XmlTestExecutionVisitor : TestMessageVisitor
     {
         public XmlTestExecutionVisitor(Func<bool> cancelThunk)
         {
