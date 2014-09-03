@@ -17,6 +17,7 @@ namespace Xunit.ConsoleClient
 
             TeamCity = Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null;
             ParallelizeTestCollections = true;
+            Tests = new List<string>();
             Parse();
         }
 
@@ -30,7 +31,7 @@ namespace Xunit.ConsoleClient
 
         public bool TeamCity { get; protected set; }
 
-        public string[] Tests { get; set; }
+        public List<string> Tests { get; private set; }
 
         static void GuardNoOptionValue(KeyValuePair<string, string> option)
         {
@@ -93,7 +94,33 @@ namespace Xunit.ConsoleClient
                         throw new ArgumentException("missing argument for --test");
                     }
 
-                    Tests = option.Value.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var insideParens = false;
+                    var start = 0;
+
+                    for (var i = 0; i < option.Value.Length; i++)
+                    {
+                        var c = option.Value[i];
+
+                        if (!insideParens && 
+                            (c == ';' || c == ','))
+                        {
+                            Tests.Add(option.Value.Substring(start, i - start));
+                            start = i + 1;
+                        }
+                        else if (c == '(')
+                        {
+                            insideParens = true;
+                        }
+                        else if (c == ')')
+                        {
+                            insideParens = false;
+                        }
+                    }
+
+                    if (start < option.Value.Length)
+                    {
+                        Tests.Add(option.Value.Substring(start));
+                    }
                 }
                 else if (optionName == "-teamcity")
                 {
