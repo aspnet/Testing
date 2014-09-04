@@ -245,9 +245,9 @@ namespace Xunit.KRunner
         }
 
         // Performs fuzzy matching for test names specified at the commandline.
-        // - test name specified at the command line might by a test uniqueId (guid) OR
+        // - test name specified at the command line might be a test uniqueId (guid) OR
         // - test name might be a full test display name (including parameters)
-        // - test might be the test class + method name
+        // - test name might be the test class + method name
         private bool IsTestNameMatch(ITestCase test, IList<string> testNames)
         {
             foreach (var testName in testNames)

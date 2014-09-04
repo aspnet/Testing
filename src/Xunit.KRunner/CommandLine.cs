@@ -94,33 +94,7 @@ namespace Xunit.ConsoleClient
                         throw new ArgumentException("missing argument for --test");
                     }
 
-                    var insideParens = false;
-                    var start = 0;
-
-                    for (var i = 0; i < option.Value.Length; i++)
-                    {
-                        var c = option.Value[i];
-
-                        if (!insideParens && 
-                            (c == ';' || c == ','))
-                        {
-                            Tests.Add(option.Value.Substring(start, i - start));
-                            start = i + 1;
-                        }
-                        else if (c == '(')
-                        {
-                            insideParens = true;
-                        }
-                        else if (c == ')')
-                        {
-                            insideParens = false;
-                        }
-                    }
-
-                    if (start < option.Value.Length)
-                    {
-                        Tests.Add(option.Value.Substring(start));
-                    }
+                    Tests.AddRange(option.Value.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries));
                 }
                 else if (optionName == "-teamcity")
                 {
