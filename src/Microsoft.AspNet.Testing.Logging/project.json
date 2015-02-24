@@ -1,0 +1,16 @@
+﻿{
+    "version": "1.0.0-*",
+    "dependencies": {
+        "Microsoft.Framework.Logging": "1.0.0-*"
+    },
+    "frameworks" : {
+        "aspnet50" : { 
+            "dependencies": {
+            }
+        },
+        "aspnetcore50" : { 
+            "dependencies": {
+            }
+        }
+    }
+}
