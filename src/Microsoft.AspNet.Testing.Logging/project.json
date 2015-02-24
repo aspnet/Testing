@@ -3,14 +3,9 @@
     "dependencies": {
         "Microsoft.Framework.Logging": "1.0.0-*"
     },
-    "frameworks" : {
-        "aspnet50" : { 
-            "dependencies": {
-            }
-        },
-        "aspnetcore50" : { 
-            "dependencies": {
-            }
-        }
+    "frameworks": {
+        "net45": { },
+        "aspnet50": { },
+        "aspnetcore50": { }
     }
 }
