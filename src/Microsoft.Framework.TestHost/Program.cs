@@ -111,10 +111,10 @@ namespace Microsoft.Framework.TestHost
                     }
 
                     var args = new List<string>()
-                {
-                    "test",
-                    "--designtime"
-                };
+                    {
+                        "test",
+                        "--designtime"
+                    };
 
                     if (tests != null)
                     {
@@ -172,7 +172,6 @@ namespace Microsoft.Framework.TestHost
                     }
 
                     var args = new string[] { "test", "--list", "--designtime" };
-
 
                     var testServices = TestServices.CreateTestServices(_services, project, channel);
                     await ProjectCommand.Execute(testServices, project, args);
