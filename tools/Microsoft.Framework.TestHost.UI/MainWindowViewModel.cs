@@ -118,7 +118,7 @@ namespace Microsoft.Framework.TestHost.UI
                 CheckFileExists = true,
                 DefaultExt = ".exe",
                 Filter = "dnx Executable (dnx.exe)|dnx.exe",
-                InitialDirectory = DNX == null ? null : Path.GetDirectoryName(DNX),
+                InitialDirectory = string.IsNullOrEmpty(DNX) ? null : Path.GetDirectoryName(DNX),
                 Title = "DNX"
             };
 
