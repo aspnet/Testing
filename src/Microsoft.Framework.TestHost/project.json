@@ -1,16 +1,16 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta4",
     "compilationOptions": {
         "warningsAsErrors": true
     },
     "dependencies": {
-        "Microsoft.Framework.TestAdapter": "1.0.0-*",
-        "Microsoft.Framework.ApplicationHost": "1.0.0-*",
-        "Microsoft.Framework.CommandLineUtils": "1.0.0-*",
-        "Microsoft.Framework.Logging": "1.0.0-*",
-        "Microsoft.Framework.Runtime": "1.0.0-*",
-        "Microsoft.Framework.Runtime.Common": { "version": "1.0.0-*", "type": "build" },
-        "Microsoft.Framework.Runtime.Interfaces": "1.0.0-*",
+        "Microsoft.Framework.TestAdapter": "1.0.0-beta4",
+        "Microsoft.Framework.ApplicationHost": "1.0.0-beta4",
+        "Microsoft.Framework.CommandLineUtils": "1.0.0-beta4",
+        "Microsoft.Framework.Logging": "1.0.0-beta4",
+        "Microsoft.Framework.Runtime": "1.0.0-beta4",
+        "Microsoft.Framework.Runtime.Common": { "version": "1.0.0-beta4", "type": "build" },
+        "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta4",
         "Newtonsoft.Json": "6.0.6"
     },
     "commands": {
@@ -20,9 +20,9 @@
         "dnx451": { },
         "dnxcore50": {
             "dependencies": {
-                "System.Console": "4.0.0-beta-*",
-                "System.Diagnostics.Process": "4.0.0-beta-*",
-                "System.Diagnostics.TraceSource": "4.0.0-beta-*"
+                "System.Console": "4.0.0-beta-22816",
+                "System.Diagnostics.Process": "4.0.0-beta-22816",
+                "System.Diagnostics.TraceSource": "4.0.0-beta-22816"
             }
         }
     }

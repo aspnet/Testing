@@ -1,7 +1,7 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta4",
     "dependencies": {
-        "xunit.runner.aspnet": "2.0.0-aspnet-*"
+        "xunit.runner.aspnet": "2.0.0-aspnet-beta4"
     },
     "frameworks": {
         "dnx451": {
@@ -13,12 +13,12 @@
         },
         "dnxcore50": {
             "dependencies": {
-                "System.Runtime": "4.0.20-beta-*",
-                "System.Runtime.InteropServices": "4.0.20-beta-*",
-                "System.Globalization": "4.0.10-beta-*",
-                "System.Threading.Tasks": "4.0.10-beta-*",
-                "System.Reflection": "4.0.10-beta-*",
-                "System.Threading.Thread": "4.0.0-beta-*"
+                "System.Runtime": "4.0.20-beta-22816",
+                "System.Runtime.InteropServices": "4.0.20-beta-22816",
+                "System.Globalization": "4.0.10-beta-22816",
+                "System.Threading.Tasks": "4.0.10-beta-22816",
+                "System.Reflection": "4.0.10-beta-22816",
+                "System.Threading.Thread": "4.0.0-beta-22816"
             }
         }
     }
