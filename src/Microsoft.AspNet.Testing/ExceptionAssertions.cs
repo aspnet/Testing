@@ -184,14 +184,18 @@ namespace Microsoft.AspNet.Testing
                 if (actualValue != null)
                 {
                     exceptionMessage += Environment.NewLine;
+#if !NET46
                     if (TestPlatformHelper.IsMono)
                     {
                         exceptionMessage += actualValue;
                     }
                     else
                     {
+#endif
                         exceptionMessage += String.Format(CultureReplacer.DefaultCulture, "Actual value was {0}.", actualValue);
+#if !NET46
                     }
+#endif
                 }
             }
 

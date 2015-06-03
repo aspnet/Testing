@@ -1,11 +1,22 @@
 {
     "version": "1.0.0-*",
-    "dependencies": {
-        "Microsoft.Framework.Runtime.Abstractions": "1.0.0-*",
-        "xunit.runner.aspnet": "2.0.0-aspnet-*"
-    },
     "frameworks": {
+        "net46": {
+            "dependencies": {
+                "xunit.assert": "2.0.0-rc3-*",
+                "xunit.extensibility.execution": "2.0.0-rc3-*"
+            },
+            "frameworkAssemblies": {
+                "System.Reflection": { "version": "4.0.0.0", "type": "build" },
+                "System.Runtime": { "version": "4.0.0.0", "type": "build" },
+                "System.Threading.Tasks": { "version": "4.0.0.0", "type": "build" }
+            }
+        },
         "dnx451": {
+            "dependencies": {
+                "Microsoft.Framework.Runtime.Abstractions": "1.0.0-*",
+                "xunit.runner.aspnet": "2.0.0-aspnet-*"
+            },
             "frameworkAssemblies": {
                 "System.Runtime": "",
                 "System.Reflection": "",
@@ -14,12 +25,14 @@
         },
         "dnxcore50": {
             "dependencies": {
+                "Microsoft.Framework.Runtime.Abstractions": "1.0.0-*",
                 "System.Runtime": "4.0.20-beta-*",
                 "System.Runtime.InteropServices": "4.0.20-beta-*",
                 "System.Globalization": "4.0.10-beta-*",
                 "System.Threading.Tasks": "4.0.10-beta-*",
                 "System.Reflection": "4.0.10-beta-*",
-                "System.Threading.Thread": "4.0.0-beta-*"
+                "System.Threading.Thread": "4.0.0-beta-*",
+                "xunit.runner.aspnet": "2.0.0-aspnet-*"
             }
         }
     }
