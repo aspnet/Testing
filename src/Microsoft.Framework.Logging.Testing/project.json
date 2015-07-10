@@ -1,9 +1,9 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta5",
     "dependencies": {
-        "Microsoft.Framework.Logging.Abstractions": "1.0.0-*",
-        "Microsoft.Framework.NotNullAttribute.Sources": { "version": "1.0.0-*", "type": "build" },
-        "xunit.assert": "2.0.0-rc3-*"
+        "Microsoft.Framework.Logging.Abstractions": "1.0.0-beta5",
+        "Microsoft.Framework.NotNullAttribute.Sources": { "version": "1.0.0-beta5", "type": "build" },
+        "xunit.assert": "2.0.0-rc3-beta5"
     },
     "frameworks": {
         "net45": {

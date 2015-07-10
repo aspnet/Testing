@@ -1,8 +1,8 @@
-﻿{
-    "version": "1.0.0-*",
+{
+    "version": "1.0.0-beta5",
     "dependencies": {
-        "Microsoft.Framework.WebEncoders": "1.0.0-*",
-        "xunit.assert": "2.0.0-rc3-*"
+        "Microsoft.Framework.WebEncoders": "1.0.0-beta5",
+        "xunit.assert": "2.0.0-rc3-beta5"
     },
     "frameworks": {
         "net45": {
