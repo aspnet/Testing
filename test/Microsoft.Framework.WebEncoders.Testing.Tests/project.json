@@ -1,17 +1,17 @@
-﻿{
+{
     "version": "1.0.0-*",
     "dependencies": {
-       "Microsoft.Framework.WebEncoders.Testing": "1.0.0-*",
-        "xunit.runner.aspnet": "2.0.0-aspnet-*"
+        "Microsoft.Framework.WebEncoders.Testing": "1.0.0-beta6",
+        "xunit.runner.aspnet": "2.0.0-aspnet-beta6"
     },
     "commands": {
         "test": "xunit.runner.aspnet"
     },
     "frameworks": {
-        "dnx451": { },
-        "dnxcore50" : { 
+        "dnx451": {},
+        "dnxcore50": {
             "dependencies": {
-                "System.Runtime": "4.0.20-*"
+                "System.Runtime": "4.0.20-beta-23109"
             }
         }
     }

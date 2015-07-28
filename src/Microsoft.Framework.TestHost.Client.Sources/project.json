@@ -1,18 +1,17 @@
-﻿{
-    "version": "1.0.0-*",
+{
+    "version": "1.0.0-beta6",
     "description": "Shared sources for automating Microsoft.Framework.TestHost",
     "repository": {
         "type": "git",
         "url": "git://github.com/aspnet/testing"
     },
     "shared": "*.cs",
-    "dependencies": {
-    },
+    "dependencies": {},
     "frameworks": {
-        "dnx451": { },
+        "dnx451": {},
         "dnxcore50": {
             "dependencies": {
-                "System.Runtime": "4.0.20-beta-*"
+                "System.Runtime": "4.0.20-beta-23109"
             }
         }
     }

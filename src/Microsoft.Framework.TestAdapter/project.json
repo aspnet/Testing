@@ -1,19 +1,22 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta6",
     "repository": {
         "type": "git",
         "url": "git://github.com/aspnet/testing"
     },
     "dependencies": {
-        "Microsoft.Framework.NotNullAttribute.Sources": { "type": "build", "version": "1.0.0-*" }
-     },
+        "Microsoft.Framework.NotNullAttribute.Sources": {
+            "type": "build",
+            "version": "1.0.0-beta6"
+        }
+    },
     "frameworks": {
-        "dnx451": { },
+        "dnx451": {},
         "dnxcore50": {
             "dependencies": {
-                "System.Collections": "4.0.10-beta-*",
-                "System.Runtime": "4.0.20-beta-*",
-                "System.Runtime.Extensions": "4.0.10-beta-*"
+                "System.Collections": "4.0.10-beta-23109",
+                "System.Runtime": "4.0.20-beta-23109",
+                "System.Runtime.Extensions": "4.0.10-beta-23109"
             }
         }
     }

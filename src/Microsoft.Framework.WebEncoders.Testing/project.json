@@ -1,11 +1,11 @@
-﻿{
-    "version": "1.0.0-*",
+{
+    "version": "1.0.0-beta6",
     "repository": {
         "type": "git",
         "url": "git://github.com/aspnet/testing"
     },
     "dependencies": {
-        "Microsoft.Framework.WebEncoders": "1.0.0-*",
+        "Microsoft.Framework.WebEncoders": "1.0.0-beta6",
         "xunit.assert": "2.0.0-rc3-*"
     },
     "frameworks": {
@@ -19,6 +19,6 @@
                 "System.Runtime": "4.0.0.0"
             }
         },
-        "dnxcore50": { }
+        "dnxcore50": {}
     }
 }

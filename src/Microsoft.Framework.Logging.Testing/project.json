@@ -1,12 +1,15 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta6",
     "repository": {
         "type": "git",
         "url": "git://github.com/aspnet/testing"
     },
     "dependencies": {
-        "Microsoft.Framework.Logging.Abstractions": "1.0.0-*",
-        "Microsoft.Framework.NotNullAttribute.Sources": { "version": "1.0.0-*", "type": "build" },
+        "Microsoft.Framework.Logging.Abstractions": "1.0.0-beta6",
+        "Microsoft.Framework.NotNullAttribute.Sources": {
+            "version": "1.0.0-beta6",
+            "type": "build"
+        },
         "xunit.assert": "2.0.0-rc3-*"
     },
     "frameworks": {
@@ -20,6 +23,6 @@
                 "System.Runtime": "4.0.0.0"
             }
         },
-        "dnxcore50": { }
+        "dnxcore50": {}
     }
 }
