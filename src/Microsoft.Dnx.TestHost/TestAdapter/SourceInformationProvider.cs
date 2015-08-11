@@ -5,12 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using dia2;
 using Microsoft.Dnx.Compilation;
 using Microsoft.Dnx.Runtime;
 using Microsoft.Framework.Logging;
 using Microsoft.Dnx.TestAdapter;
+using System.Runtime.CompilerServices;
 
 namespace Microsoft.Dnx.TestHost.TestAdapter
 {
@@ -20,6 +22,7 @@ namespace Microsoft.Dnx.TestHost.TestAdapter
         private readonly ILogger _logger;
 
         private bool? _isInitialized;
+        private Assembly _assembly;
         private IDiaDataSource _diaDataSource;
         private IDiaSession _diaSession;
         private AssemblyData _assemblyData;
@@ -40,8 +43,17 @@ namespace Microsoft.Dnx.TestHost.TestAdapter
                 return null;
             }
 
+            Debug.Assert(_isInitialized == true);
+            Debug.Assert(_assembly != null);
             Debug.Assert(_diaSession != null);
             Debug.Assert(_assemblyData != null);
+
+            var method = ResolveBestMethodInfo(className, methodName);
+            if (method != null)
+            {
+                className = method.DeclaringType.FullName;
+                methodName = method.Name;
+            }
 
             // The DIA code doesn't include a + for nested classes, just a dot.
             var symbolId = FindMethodSymbolId(className.Replace('+', '.'), methodName);
@@ -60,6 +72,33 @@ namespace Microsoft.Dnx.TestHost.TestAdapter
                 _logger.LogWarning("Failed to access source information in symbol.", ex);
                 return null;
             }
+        }
+
+        private MethodInfo ResolveBestMethodInfo(string className, string methodName)
+        {
+            Debug.Assert(_isInitialized == true);
+
+            var @class = _assembly.GetType(className);
+            if (@class == null)
+            {
+                return null;
+            }
+
+            var method = @class.GetMethods().Where(m => m.Name == methodName).FirstOrDefault();
+            if (method == null)
+            {
+                return null;
+            }
+
+            var attribute = method.GetCustomAttribute<StateMachineAttribute>();
+            if (attribute?.StateMachineType == null)
+            {
+                return method;
+            }
+
+            return attribute.StateMachineType.GetMethod(
+                "MoveNext",
+                BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
         private uint? FindMethodSymbolId(string className, string methodName)
@@ -168,6 +207,8 @@ namespace Microsoft.Dnx.TestHost.TestAdapter
             {
                 var context = new CapturingLoadContext();
                 _project.Load(context);
+
+                _assembly = Assembly.Load(new AssemblyName(_project.Name));
 
                 _diaDataSource.loadDataFromIStream(new StreamWrapper(context.Symbols));
                 _diaDataSource.openSession(out _diaSession);
