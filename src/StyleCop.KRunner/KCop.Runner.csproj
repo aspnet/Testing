@@ -13,6 +13,12 @@
     <FileAlignment>512</FileAlignment>
     <BaseIntermediateOutputPath>obj/net45</BaseIntermediateOutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <HomeDirectory Condition=" '$(HomeDirectory)' == '' ">$(UserProfile)</HomeDirectory>
+    <HomeDirectory Condition=" '$(HomeDirectory)' == '' ">$(Home)</HomeDirectory>
+    <PackagesDirectory Condition=" '$(PackagesDirectory)' == '' ">$(KRE_Packages)</PackagesDirectory>
+    <PackagesDirectory Condition=" '$(PackagesDirectory)' == '' ">$([System.IO.Path]::Combine($(HomeDirectory), '.kpm', 'packages'))</PackagesDirectory>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -40,13 +46,13 @@
     <Reference Include="mscorlib" />
     <Reference Include="StyleCop, Version=4.7.10.0, Culture=neutral, PublicKeyToken=f904653c63bc2738, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\StyleCop.4.7.10.0\lib\StyleCop.dll</HintPath>
+      <HintPath>$(PackagesDirectory)\StyleCop\4.7.10.0\lib\StyleCop.dll</HintPath>
     </Reference>
     <Reference Include="StyleCop.CSharp">
-      <HintPath>..\..\packages\StyleCop.4.7.10.0\lib\StyleCop.CSharp.dll</HintPath>
+      <HintPath>$(PackagesDirectory)\StyleCop\4.7.10.0\lib\StyleCop.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="StyleCop.CSharp.Rules">
-      <HintPath>..\..\packages\StyleCop.4.7.10.0\lib\StyleCop.CSharp.Rules.dll</HintPath>
+      <HintPath>$(PackagesDirectory)\StyleCop\4.7.10.0\lib\StyleCop.CSharp.Rules.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

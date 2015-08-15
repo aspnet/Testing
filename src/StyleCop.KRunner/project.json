@@ -1,0 +1,21 @@
+{
+  "version": "1.0.2-*",
+  "description": "A console StyleCop runner",
+  "frameworks": {
+    "net451": {
+      "wrappedProject": "./KCop.Runner.csproj",
+      "bin": {
+        "assembly": "./bin/{configuration}/net45/StyleCop.KRunner.exe",
+        "pdb": "./bin/{configuration}/net45/StyleCop.KRunner.pdb"
+      },
+      "dependencies": {
+        "StyleCop": "4.7.10.0"
+      }
+    }
+  },
+  "scripts": {
+    "prebuild.perconfiguration": [
+      '"%ProgramFiles(x86)%\\MSBuild\\14.0\\Bin\\MSBuild.exe" %project:Directory%\\KCop.Runner.csproj /p:Configuration=%project:Configuration%'
+    ]
+  }
+}
