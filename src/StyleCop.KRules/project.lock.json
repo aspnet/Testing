@@ -1,0 +1,41 @@
+{
+  "locked": true,
+  "version": 1,
+  "targets": {
+    "DNX,Version=v4.5.1": {
+      "StyleCop/4.7.10.0": {
+        "type": "package",
+        "compile": {
+          "lib/StyleCop.CSharp.dll": {},
+          "lib/StyleCop.CSharp.Rules.dll": {},
+          "lib/StyleCop.dll": {}
+        },
+        "runtime": {
+          "lib/StyleCop.CSharp.dll": {},
+          "lib/StyleCop.CSharp.Rules.dll": {},
+          "lib/StyleCop.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "StyleCop/4.7.10.0": {
+      "type": "package",
+      "sha512": "DCGyv3AY6sYEPgt8NhuBpy3MoUIMo0OoUvMumCze/MfEwnOf5TeWAfjqThxAVnugHL/I27SIzbhXCu242LhECQ==",
+      "files": [
+        "lib/StyleCop.CSharp.dll",
+        "lib/StyleCop.CSharp.Rules.dll",
+        "lib/StyleCop.dll",
+        "StyleCop.4.7.10.nupkg",
+        "StyleCop.4.7.10.nupkg.sha512",
+        "StyleCop.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "StyleCop >= 4.7.10.0"
+    ],
+    "DNX,Version=v4.5.1": []
+  }
+}

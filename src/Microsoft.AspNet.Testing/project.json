@@ -1,12 +1,12 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta7",
     "repository": {
         "type": "git",
         "url": "git://github.com/aspnet/testing"
     },
     "dependencies": {
-        "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-*",
-        "xunit.runner.aspnet": "2.0.0-aspnet-*"
+        "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-beta7",
+        "xunit.runner.aspnet": "2.0.0-aspnet-beta7"
     },
     "frameworks": {
         "dnx451": {
@@ -18,12 +18,12 @@
         },
         "dnxcore50": {
             "dependencies": {
-                "System.Runtime": "4.0.21-beta-*",
-                "System.Runtime.InteropServices": "4.0.21-beta-*",
-                "System.Globalization": "4.0.11-beta-*",
-                "System.Threading.Tasks": "4.0.11-beta-*",
-                "System.Reflection": "4.0.11-beta-*",
-                "System.Threading.Thread": "4.0.0-beta-*"
+                "System.Runtime": "4.0.21-beta-23225",
+                "System.Runtime.InteropServices": "4.0.21-beta-23225",
+                "System.Globalization": "4.0.11-beta-23225",
+                "System.Threading.Tasks": "4.0.11-beta-23225",
+                "System.Reflection": "4.1.0-beta-23225",
+                "System.Threading.Thread": "4.0.0-beta-23225"
             }
         }
     }

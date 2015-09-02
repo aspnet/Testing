@@ -1,17 +1,18 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta7",
     "repository": {
         "type": "git",
         "url": "git://github.com/aspnet/testing"
     },
     "dependencies": {
-        "StyleCop":  "4.7.10.0"
+        "StyleCop": "4.7.10.0"
     },
-    "resources": [ "*.xml" ],
-    "frameworks" : {
-        "dnx451" : { 
-            "dependencies": {
-            }
+    "resources": [
+        "*.xml"
+    ],
+    "frameworks": {
+        "dnx451": {
+            "dependencies": {}
         }
     }
 }
