@@ -37,7 +37,7 @@ namespace Microsoft.AspNet.Testing.xunit
                 case "windows":
                     var osVersion = TestPlatformHelper.RuntimeEnvironment.OperatingSystemVersion;
 
-                    if (osVersion.Equals("7.0", StringComparison.OrdinalIgnoreCase) &&
+                    if (osVersion.Equals("6.1", StringComparison.OrdinalIgnoreCase) &&
                         (excludedOperatingSystems.HasFlag(OperatingSystems.Win7) || excludedOperatingSystems.HasFlag(OperatingSystems.Win2008R2)))
                     {
                         return false;
