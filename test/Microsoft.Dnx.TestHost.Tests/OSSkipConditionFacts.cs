@@ -36,8 +36,8 @@ namespace Microsoft.Dnx.TestHost.Tests
         }
 
         [ConditionalFact]
-        [OSSkipCondition(OperatingSystems.Win7And2008R2)]
-        public void RunTest_DoesNotRunOnWin7()
+        [OSSkipCondition(OperatingSystems.Win7 | OperatingSystems.Win2008R2)]
+        public void RunTest_DoesNotRunOnWin7OrWin2008R2()
         {
             Version osVersion = Environment.OSVersion.Version;
 
@@ -46,6 +46,18 @@ namespace Microsoft.Dnx.TestHost.Tests
             {
                 Assert.False(true, "Test should not be running on Win7");
             }
+        }
+
+        [ConditionalFact]
+        [OSSkipCondition(OperatingSystems.AllWindows)]
+        public void TestSkipWindows()
+        {
+            var env = (IRuntimeEnvironment)CallContextServiceLocator
+                .Locator
+                .ServiceProvider
+                .GetService(typeof(IRuntimeEnvironment));
+
+            Assert.False("Windows" == env.OperatingSystem, "Test should not be running on Windows");
         }
     }
 }

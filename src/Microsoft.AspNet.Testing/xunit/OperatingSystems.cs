@@ -13,7 +13,6 @@ namespace Microsoft.AspNet.Testing.xunit
         Win2008R2 = 1 << 1,
         Linux = 1 << 2,
         MacOSX = 1 << 3,
-
-        Win7And2008R2 = Win7 | Win2008R2,
+        AllWindows = 1 << 4
     }
 }
