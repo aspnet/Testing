@@ -11,53 +11,49 @@ namespace Microsoft.Dnx.TestHost.Tests
 {
     public class OSSkipConditionFacts
     {
+        private IRuntimeEnvironment RuntimeEnvironment
+        {
+            get
+            {
+                return (IRuntimeEnvironment)CallContextServiceLocator
+                        .Locator
+                        .ServiceProvider
+                        .GetService(typeof(IRuntimeEnvironment));
+            }
+        }
+
         [ConditionalFact]
         [OSSkipCondition(OperatingSystems.Linux)]
         public void TestSkipLinux()
         {
-            var env = (IRuntimeEnvironment)CallContextServiceLocator
-                .Locator
-                .ServiceProvider
-                .GetService(typeof(IRuntimeEnvironment));
-
-            Assert.False("Linux" == env.OperatingSystem, "Test should not be running on Linux");
+            Assert.False("Linux" == RuntimeEnvironment.OperatingSystem, "Test should not be running on Linux");
         }
 
         [ConditionalFact]
         [OSSkipCondition(OperatingSystems.MacOSX)]
         public void TestSkipMacOSX()
         {
-            var env = (IRuntimeEnvironment)CallContextServiceLocator
-                .Locator
-                .ServiceProvider
-                .GetService(typeof(IRuntimeEnvironment));
-
-            Assert.False("Darwin" == env.OperatingSystem, "Test should not be running on MacOSX");
+            Assert.False("Darwin" == RuntimeEnvironment.OperatingSystem, "Test should not be running on MacOSX.");
         }
 
         [ConditionalFact]
-        [OSSkipCondition(OperatingSystems.Win7 | OperatingSystems.Win2008R2)]
+        [OSSkipCondition(OperatingSystems.Windows, OperatingSystemVersions.Win7, OperatingSystemVersions.Win2008R2)]
         public void RunTest_DoesNotRunOnWin7OrWin2008R2()
         {
-            Version osVersion = Environment.OSVersion.Version;
+            var osVersion = Environment.OSVersion.Version;
 
             if (Environment.OSVersion.Platform == PlatformID.Win32NT
                 && osVersion.Major == 6 && osVersion.Minor == 1)
             {
-                Assert.False(true, "Test should not be running on Win7");
+                Assert.False(true, "Test should not be running on Win7 or Win2008R2.");
             }
         }
 
         [ConditionalFact]
-        [OSSkipCondition(OperatingSystems.AllWindows)]
+        [OSSkipCondition(OperatingSystems.Windows)]
         public void TestSkipWindows()
         {
-            var env = (IRuntimeEnvironment)CallContextServiceLocator
-                .Locator
-                .ServiceProvider
-                .GetService(typeof(IRuntimeEnvironment));
-
-            Assert.False("Windows" == env.OperatingSystem, "Test should not be running on Windows");
+            Assert.False("Windows" == RuntimeEnvironment.OperatingSystem, "Test should not be running on Windows.");
         }
     }
 }
