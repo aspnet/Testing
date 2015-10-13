@@ -13,16 +13,21 @@ namespace Microsoft.AspNet.Testing.xunit
     {
         private readonly OperatingSystems _excludedOperatingSystem;
         private readonly IEnumerable<string> _excludedVersions;
+        private readonly IRuntimeEnvironment _runtimeEnvironment;
 
-        public OSSkipConditionAttribute(OperatingSystems operatingSystem, params string[] versions)
+        public OSSkipConditionAttribute(OperatingSystems operatingSystem, params string[] versions) :
+            this(operatingSystem, TestPlatformHelper.RuntimeEnvironment, versions)
         {
-            _excludedOperatingSystem = operatingSystem;
-            _excludedVersions = versions ?? Enumerable.Empty<string>();
-            RuntimeEnvironment = TestPlatformHelper.RuntimeEnvironment;
         }
 
         // to enable unit testing
-        internal IRuntimeEnvironment RuntimeEnvironment { get; set; }
+        internal OSSkipConditionAttribute(
+            OperatingSystems operatingSystem, IRuntimeEnvironment runtimeEnvironment, params string[] versions)
+        {
+            _excludedOperatingSystem = operatingSystem;
+            _excludedVersions = versions ?? Enumerable.Empty<string>();
+            _runtimeEnvironment = runtimeEnvironment;
+        }
 
         public bool IsMet
         {
@@ -46,8 +51,8 @@ namespace Microsoft.AspNet.Testing.xunit
 
         private OSInfo GetCurrentOSInfo()
         {
-            var currentOS = RuntimeEnvironment.OperatingSystem;
-            var currentOSVersion = RuntimeEnvironment.OperatingSystemVersion;
+            var currentOS = _runtimeEnvironment.OperatingSystem;
+            var currentOSVersion = _runtimeEnvironment.OperatingSystemVersion;
 
             OperatingSystems os;
             switch (currentOS.ToLowerInvariant())

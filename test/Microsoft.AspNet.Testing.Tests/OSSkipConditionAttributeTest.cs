@@ -18,8 +18,7 @@ namespace Microsoft.AspNet.Testing.Tests
             var env = new MockRuntimeEnvironment(osName, "2.5");
 
             // Act
-            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows);
-            osSkipAttribute.RuntimeEnvironment = env;
+            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows, env);
 
             // Assert
             var exception = Assert.Throws<InvalidOperationException>(() => osSkipAttribute.IsMet);
@@ -33,8 +32,7 @@ namespace Microsoft.AspNet.Testing.Tests
             var env = new MockRuntimeEnvironment("Windows", "2.5");
 
             // Act
-            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows);
-            osSkipAttribute.RuntimeEnvironment = env;
+            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows, env);
 
             // Assert
             Assert.False(osSkipAttribute.IsMet);
@@ -47,8 +45,7 @@ namespace Microsoft.AspNet.Testing.Tests
             var env = new MockRuntimeEnvironment("Windows", "2.5");
 
             // Act
-            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Linux);
-            osSkipAttribute.RuntimeEnvironment = env;
+            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Linux, env);
 
             // Assert
             Assert.True(osSkipAttribute.IsMet);
@@ -61,8 +58,7 @@ namespace Microsoft.AspNet.Testing.Tests
             var env = new MockRuntimeEnvironment("Windows", "2.5");
 
             // Act
-            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows, "10.0");
-            osSkipAttribute.RuntimeEnvironment = env;
+            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows, env, "10.0");
 
             // Assert
             Assert.True(osSkipAttribute.IsMet);
@@ -75,8 +71,7 @@ namespace Microsoft.AspNet.Testing.Tests
             var env = new MockRuntimeEnvironment("Windows", "2.5");
 
             // Act
-            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Linux, "2.5");
-            osSkipAttribute.RuntimeEnvironment = env;
+            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Linux, env, "2.5");
 
             // Assert
             Assert.True(osSkipAttribute.IsMet);
@@ -91,8 +86,7 @@ namespace Microsoft.AspNet.Testing.Tests
             var env = new MockRuntimeEnvironment("Windows", currentOSVersion);
 
             // Act
-            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows, skipVersion);
-            osSkipAttribute.RuntimeEnvironment = env;
+            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows, env, skipVersion);
 
             // Assert
             Assert.False(osSkipAttribute.IsMet);
@@ -105,8 +99,7 @@ namespace Microsoft.AspNet.Testing.Tests
             var env = new MockRuntimeEnvironment("Windows", "2.5");
 
             // Act
-            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows, "10.0", "3.4", "2.5");
-            osSkipAttribute.RuntimeEnvironment = env;
+            var osSkipAttribute = new OSSkipConditionAttribute(OperatingSystems.Windows, env, "10.0", "3.4", "2.5");
 
             // Assert
             Assert.False(osSkipAttribute.IsMet);

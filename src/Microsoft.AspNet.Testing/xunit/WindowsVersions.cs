@@ -3,7 +3,7 @@
 
 namespace Microsoft.AspNet.Testing.xunit
 {
-    public static class OperatingSystemVersions
+    public static class WindowsVersions
     {
         public const string Win7 = "6.1";
 

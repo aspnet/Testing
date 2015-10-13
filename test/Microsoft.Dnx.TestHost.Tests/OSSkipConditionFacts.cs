@@ -26,18 +26,22 @@ namespace Microsoft.Dnx.TestHost.Tests
         [OSSkipCondition(OperatingSystems.Linux)]
         public void TestSkipLinux()
         {
-            Assert.False("Linux" == RuntimeEnvironment.OperatingSystem, "Test should not be running on Linux");
+            Assert.False(
+                "linux" == RuntimeEnvironment.OperatingSystem.ToLowerInvariant(),
+                "Test should not be running on Linux");
         }
 
         [ConditionalFact]
         [OSSkipCondition(OperatingSystems.MacOSX)]
         public void TestSkipMacOSX()
         {
-            Assert.False("Darwin" == RuntimeEnvironment.OperatingSystem, "Test should not be running on MacOSX.");
+            Assert.False(
+                "darwin" == RuntimeEnvironment.OperatingSystem.ToLowerInvariant(),
+                "Test should not be running on MacOSX.");
         }
 
         [ConditionalFact]
-        [OSSkipCondition(OperatingSystems.Windows, OperatingSystemVersions.Win7, OperatingSystemVersions.Win2008R2)]
+        [OSSkipCondition(OperatingSystems.Windows, WindowsVersions.Win7, WindowsVersions.Win2008R2)]
         public void RunTest_DoesNotRunOnWin7OrWin2008R2()
         {
             var osVersion = Environment.OSVersion.Version;
@@ -53,7 +57,9 @@ namespace Microsoft.Dnx.TestHost.Tests
         [OSSkipCondition(OperatingSystems.Windows)]
         public void TestSkipWindows()
         {
-            Assert.False("Windows" == RuntimeEnvironment.OperatingSystem, "Test should not be running on Windows.");
+            Assert.False(
+                "windows" == RuntimeEnvironment.OperatingSystem.ToLowerInvariant(),
+                "Test should not be running on Windows.");
         }
     }
 }
