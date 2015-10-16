@@ -1,6 +1,6 @@
 {
     "description": "Test host for discovering and running unit tests at design time, such as in Visual Studio.",
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta8",
     "repository": {
         "type": "git",
         "url": "git://github.com/aspnet/testing"
@@ -9,21 +9,21 @@
         "warningsAsErrors": true
     },
     "dependencies": {
-        "Microsoft.Dnx.Compilation.Abstractions": "1.0.0-*",
+        "Microsoft.Dnx.Compilation.Abstractions": "1.0.0-beta8",
         "Microsoft.Dnx.Runtime.CommandParsing.Sources": {
-            "version": "1.0.0-*",
+            "version": "1.0.0-beta8",
             "type": "build"
         },
         "Microsoft.Dnx.Runtime.Sources": {
-            "version": "1.0.0-*",
+            "version": "1.0.0-beta8",
             "type": "build"
         },
-        "Microsoft.Dnx.Testing.Abstractions": "1.0.0-*",
+        "Microsoft.Dnx.Testing.Abstractions": "1.0.0-beta8",
         "Microsoft.Framework.CommandLineUtils.Sources": {
-            "version": "1.0.0-*",
+            "version": "1.0.0-beta8",
             "type": "build"
         },
-        "Microsoft.Framework.Logging": "1.0.0-*",
+        "Microsoft.Framework.Logging": "1.0.0-beta8",
         "Newtonsoft.Json": "6.0.6"
     },
     "commands": {
@@ -38,14 +38,14 @@
         },
         "dnxcore50": {
             "dependencies": {
-                "System.Console": "4.0.0-beta-*",
-                "System.Diagnostics.Process": "4.1.0-beta-*",
-                "System.Diagnostics.TraceSource": "4.0.0-beta-*",
-                "System.Diagnostics.TextWriterTraceListener": "4.0.0-beta-*",
-                "System.Net.Primitives": "4.0.11-beta-*",
-                "System.Net.Sockets": "4.1.0-beta-*",
-                "System.Reflection.Extensions": "4.0.1-beta-*",
-                "System.Threading.Thread": "4.0.0-beta-*"
+                "System.Console": "4.0.0-beta-23409",
+                "System.Diagnostics.Process": "4.1.0-beta-23409",
+                "System.Diagnostics.TraceSource": "4.0.0-beta-23409",
+                "System.Diagnostics.TextWriterTraceListener": "4.0.0-beta-23409",
+                "System.Net.Primitives": "4.0.11-beta-23409",
+                "System.Net.Sockets": "4.1.0-beta-23409",
+                "System.Reflection.Extensions": "4.0.1-beta-23409",
+                "System.Threading.Thread": "4.0.0-beta-23409"
             }
         }
     }
