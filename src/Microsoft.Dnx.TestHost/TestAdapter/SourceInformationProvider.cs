@@ -351,6 +351,16 @@ namespace Microsoft.Dnx.TestHost.TestAdapter
 
                 return null;
             }
+
+            IntPtr LoadUnmanagedLibrary(string name)
+            {
+                return IntPtr.Zero;
+            }
+
+            IntPtr LoadUnmanagedLibraryFromPath(string path)
+            {
+                return IntPtr.Zero;
+            }
         }
     }
 }
