@@ -8,7 +8,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Microsoft.AspNet.Testing.xunit
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
     public class OSSkipConditionAttribute : Attribute, ITestCondition
     {
         private readonly OperatingSystems _excludedOperatingSystem;
