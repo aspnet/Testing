@@ -1,6 +1,6 @@
 {
   "description": "Various helpers for writing tests that use DNX or ASP.NET.",
-  "version": "1.0.0-*",
+  "version": "1.0.0-rc1-final",
   "compilationOptions": {
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk"
@@ -10,8 +10,8 @@
     "url": "git://github.com/aspnet/testing"
   },
   "dependencies": {
-    "Microsoft.Extensions.PlatformAbstractions": "1.0.0-*",
-    "xunit.runner.aspnet": "2.0.0-aspnet-*"
+    "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
+    "xunit.runner.aspnet": "2.0.0-aspnet-rc1-final"
   },
   "frameworks": {
     "dnx451": {
@@ -23,12 +23,12 @@
     },
     "dnxcore50": {
       "dependencies": {
-        "System.Runtime": "4.0.21-beta-*",
-        "System.Runtime.InteropServices": "4.0.21-beta-*",
-        "System.Globalization": "4.0.11-beta-*",
-        "System.Threading.Tasks": "4.0.11-beta-*",
-        "System.Reflection": "4.0.11-beta-*",
-        "System.Threading.Thread": "4.0.0-beta-*"
+        "System.Runtime": "4.0.21-beta-23516",
+        "System.Runtime.InteropServices": "4.0.21-beta-23516",
+        "System.Globalization": "4.0.11-beta-23516",
+        "System.Threading.Tasks": "4.0.11-beta-23516",
+        "System.Reflection": "4.1.0-beta-23516",
+        "System.Threading.Thread": "4.0.0-beta-23516"
       }
     }
   }

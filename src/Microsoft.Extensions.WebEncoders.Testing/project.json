@@ -4,13 +4,13 @@
     "keyFile": "../../tools/Key.snk"
   },
   "description": "Helpers for writing tests that useMicrosoft.Extensions.WebEncoders.",
-  "version": "1.0.0-*",
+  "version": "1.0.0-rc1-final",
   "repository": {
     "type": "git",
     "url": "git://github.com/aspnet/testing"
   },
   "dependencies": {
-    "Microsoft.Extensions.WebEncoders": "1.0.0-*",
+    "Microsoft.Extensions.WebEncoders": "1.0.0-rc1-final",
     "xunit.assert": "2.1.0-*"
   },
   "frameworks": {
