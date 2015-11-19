@@ -12,7 +12,8 @@ namespace Microsoft.AspNet.Testing.xunit
         private readonly string _environmentVariableName;
         private readonly string _environmentVariableValue;
 
-        public EnvironmentVariableSkipConditionAttribute(string environmentVariableName, string environmentVariableValue)
+        public EnvironmentVariableSkipConditionAttribute(
+            string environmentVariableName, string environmentVariableValue)
         {
             _environmentVariableName = environmentVariableName;
             _environmentVariableValue = environmentVariableValue;
@@ -23,7 +24,8 @@ namespace Microsoft.AspNet.Testing.xunit
         {
             get
             {
-                var skip = _environmentVariableValue.Equals(Environment.GetEnvironmentVariable(_environmentVariableName));
+                var currentValue = Environment.GetEnvironmentVariable(_environmentVariableName);
+                var skip = string.Equals(currentValue, _environmentVariableValue);
                 return !skip;
             }
         }

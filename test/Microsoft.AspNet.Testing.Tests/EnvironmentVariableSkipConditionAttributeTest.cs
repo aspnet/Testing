@@ -22,6 +22,8 @@ namespace Microsoft.AspNet.Testing.Tests
 
             // Assert
             Assert.False(attribute.IsMet);
+
+            Environment.SetEnvironmentVariable(environmentVariableName, null);
         }
 
         [Fact]
@@ -36,6 +38,8 @@ namespace Microsoft.AspNet.Testing.Tests
 
             // Assert
             Assert.True(attribute.IsMet);
+
+            Environment.SetEnvironmentVariable(environmentVariableName, null);
         }
 
         [Fact]
@@ -47,9 +51,11 @@ namespace Microsoft.AspNet.Testing.Tests
 
             // Act
             var attribute = new EnvironmentVariableSkipConditionAttribute(environmentVariableName, "Value");
-
+            
             // Assert
             Assert.True(attribute.IsMet);
+
+            Environment.SetEnvironmentVariable(environmentVariableName, null);
         }
     }
 }
