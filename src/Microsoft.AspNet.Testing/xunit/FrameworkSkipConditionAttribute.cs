@@ -5,7 +5,7 @@ using System;
 
 namespace Microsoft.AspNet.Testing.xunit
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false)]
     public class FrameworkSkipConditionAttribute : Attribute, ITestCondition
     {
         private readonly RuntimeFrameworks _excludedFrameworks;

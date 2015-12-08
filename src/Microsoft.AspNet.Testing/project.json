@@ -11,10 +11,21 @@
   },
   "dependencies": {
     "Microsoft.Extensions.PlatformAbstractions": "1.0.0-*",
-    "xunit.runner.aspnet": "2.0.0-aspnet-*"
+    "xunit.assert": "2.1.0-*",
+    "xunit.extensibility.execution": "2.1.0-*"
   },
   "frameworks": {
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Reflection": "",
+        "System.Threading.Tasks": ""
+      }
+    },
     "dnx451": {
+      "dependencies": {
+        "xunit.runner.aspnet": "2.0.0-aspnet-*"
+      },
       "frameworkAssemblies": {
         "System.Runtime": "",
         "System.Reflection": "",
@@ -23,6 +34,7 @@
     },
     "dnxcore50": {
       "dependencies": {
+        "xunit.runner.aspnet": "2.0.0-aspnet-*",
         "System.Runtime": "4.0.21-*",
         "System.Runtime.InteropServices": "4.0.21-*",
         "System.Globalization": "4.0.11-*",
