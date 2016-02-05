@@ -15,11 +15,11 @@
     "xunit": "2.1.0"
   },
   "frameworks": {
-    "dnx451": {
+    "net451": {
       "frameworkAssemblies": {
-        "System.Runtime": "",
-        "System.Reflection": "",
-        "System.Threading.Tasks": ""
+        "System.Runtime": {"type": "build" },
+        "System.Reflection": {"type": "build" },
+        "System.Threading.Tasks": {"type": "build" }
       }
     },
     "dnxcore50": {
