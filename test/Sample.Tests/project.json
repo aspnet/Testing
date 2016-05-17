@@ -14,7 +14,7 @@
       ],
       "dependencies": {
         "dotnet-test-xunit": "1.0.0-*",
-        "System.Diagnostics.Process": "4.1.0-*"
+        "System.Diagnostics.Process": "4.1.0-rc2-24027"
       }
     },
     "net451": {
