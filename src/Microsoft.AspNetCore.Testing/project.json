@@ -1,5 +1,5 @@
 {
-  "description": "Various helpers for writing tests that use DNX or ASP.NET.",
+  "description": "Various helpers for writing tests that use ASP.NET Core or ASP.NET.",
   "version": "1.0.0-*",
   "buildOptions": {
     "warningsAsErrors": true,
