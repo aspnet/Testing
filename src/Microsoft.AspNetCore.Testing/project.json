@@ -1,6 +1,6 @@
 {
   "description": "Various helpers for writing tests that use DNX or ASP.NET.",
-  "version": "1.0.0-*",
+  "version": "1.0.0-rtm-21431",
   "buildOptions": {
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk",
@@ -17,10 +17,10 @@
   },
   "dependencies": {
     "Microsoft.Extensions.RuntimeEnvironment.Sources": {
-      "version": "1.0.0-*",
+      "version": "1.0.0-rtm-21431",
       "type": "build"
     },
-    "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-*",
+    "System.Runtime.InteropServices.RuntimeInformation": "4.0.0",
     "xunit": "2.1.0"
   },
   "frameworks": {
@@ -39,13 +39,13 @@
     },
     "netstandard1.3": {
       "dependencies": {
-        "System.Globalization": "4.0.11-*",
-        "System.Linq": "4.1.0-*",
-        "System.Reflection": "4.1.0-*",
-        "System.Resources.ResourceManager": "4.0.1-*",
-        "System.Runtime.Extensions": "4.1.0-*",
-        "System.Runtime.InteropServices": "4.1.0-*",
-        "System.Threading.Thread": "4.0.0-*"
+        "System.Globalization": "4.0.11",
+        "System.Linq": "4.1.0",
+        "System.Reflection": "4.1.0",
+        "System.Resources.ResourceManager": "4.0.1",
+        "System.Runtime.Extensions": "4.1.0",
+        "System.Runtime.InteropServices": "4.1.0",
+        "System.Threading.Thread": "4.0.0"
       },
       "imports": [
         "portable-net451+win8"
