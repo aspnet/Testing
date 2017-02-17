@@ -8,7 +8,7 @@ using Xunit.Sdk;
 namespace Microsoft.AspNetCore.Testing.xunit
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    [XunitTestCaseDiscoverer("Microsoft.AspNetCore.Testing.xunit.ConditionalFactDiscoverer", "Microsoft.AspNetCore.Testing")]
+    [XunitTestCaseDiscoverer("Microsoft.AspNetCore.Testing.xunit." + nameof(ConditionalFactDiscoverer), "Microsoft.AspNetCore.Testing")]
     public class ConditionalFactAttribute : FactAttribute
     {
     }
