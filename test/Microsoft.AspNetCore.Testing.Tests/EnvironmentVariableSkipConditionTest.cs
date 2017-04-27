@@ -7,7 +7,8 @@ namespace Microsoft.AspNetCore.Testing.xunit
 {
     public class EnvironmentVariableSkipConditionTest
     {
-        private readonly string _skipReason = "Test skipped on environment variable with name '{0}' and value '{1}'";
+        private readonly string _skipReason = "Test skipped on environment variable with name '{0}' and value '{1}'" +
+            $" and for the '{nameof(EnvironmentVariableSkipConditionAttribute.SkipOnMatch)}' value of '{{2}}'.";
 
         [Theory]
         [InlineData("false")]
@@ -46,7 +47,7 @@ namespace Microsoft.AspNetCore.Testing.xunit
             // Assert
             Assert.True(isMet);
             Assert.Equal(
-                string.Format(_skipReason, "Run", environmentVariableValue),
+                string.Format(_skipReason, "Run", environmentVariableValue, attribute.SkipOnMatch),
                 attribute.SkipReason);
         }
 
@@ -65,7 +66,7 @@ namespace Microsoft.AspNetCore.Testing.xunit
             // Assert
             Assert.True(isMet);
             Assert.Equal(
-                string.Format(_skipReason, "Run", "(null)"),
+                string.Format(_skipReason, "Run", "(null)", attribute.SkipOnMatch),
                 attribute.SkipReason);
         }
 
@@ -88,6 +89,22 @@ namespace Microsoft.AspNetCore.Testing.xunit
             Assert.True(isMet);
         }
 
+        [Fact]
+        public void IsMet_DoesNotMatch_OnMultipleSkipValues()
+        {
+            // Arrange
+            var attribute = new EnvironmentVariableSkipConditionAttribute(
+                new TestEnvironmentVariable("100"),
+                "Build",
+                "125", "126");
+
+            // Act
+            var isMet = attribute.IsMet;
+
+            // Assert
+            Assert.False(isMet);
+        }
+
         [Theory]
         [InlineData("CentOS")]
         [InlineData(null)]
@@ -100,7 +117,7 @@ namespace Microsoft.AspNetCore.Testing.xunit
                 "LinuxFlavor",
                 "Ubuntu14.04")
             {
-                // Example: Run this test on all OSes except on "Ubutnu14.04"
+                // Example: Run this test on all OSes except on "Ubuntu14.04"
                 SkipOnMatch = false
             };
 
@@ -120,7 +137,7 @@ namespace Microsoft.AspNetCore.Testing.xunit
                 "LinuxFlavor",
                 "Ubuntu14.04")
             {
-                // Example: Run this test on all OSes except on "Ubutnu14.04"
+                // Example: Run this test on all OSes except on "Ubuntu14.04"
                 SkipOnMatch = false
             };
 

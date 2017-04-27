@@ -79,7 +79,8 @@ namespace Microsoft.AspNetCore.Testing.xunit
             get
             {
                 var value = _currentValue == null ? "(null)" : _currentValue;
-                return $"Test skipped on environment variable with name '{_variableName}' and value '{value}'";
+                return $"Test skipped on environment variable with name '{_variableName}' and value '{value}' and " +
+                    $"for the '{nameof(SkipOnMatch)}' value of '{SkipOnMatch}'.";
             }
         }
 
