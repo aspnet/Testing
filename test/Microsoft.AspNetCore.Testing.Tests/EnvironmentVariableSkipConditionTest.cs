@@ -88,6 +88,49 @@ namespace Microsoft.AspNetCore.Testing.xunit
             Assert.True(isMet);
         }
 
+        [Theory]
+        [InlineData("CentOS")]
+        [InlineData(null)]
+        [InlineData("")]
+        public void IsMet_Matches_WhenSkipOnMatchIsFalse(string environmentVariableValue)
+        {
+            // Arrange
+            var attribute = new EnvironmentVariableSkipConditionAttribute(
+                new TestEnvironmentVariable(environmentVariableValue),
+                "LinuxFlavor",
+                "Ubuntu14.04")
+            {
+                // Example: Run this test on all OSes except on "Ubutnu14.04"
+                SkipOnMatch = false
+            };
+
+            // Act
+            var isMet = attribute.IsMet;
+
+            // Assert
+            Assert.True(isMet);
+        }
+
+        [Fact]
+        public void IsMet_DoesNotMatch_WhenSkipOnMatchIsFalse()
+        {
+            // Arrange
+            var attribute = new EnvironmentVariableSkipConditionAttribute(
+                new TestEnvironmentVariable("Ubuntu14.04"),
+                "LinuxFlavor",
+                "Ubuntu14.04")
+            {
+                // Example: Run this test on all OSes except on "Ubutnu14.04"
+                SkipOnMatch = false
+            };
+
+            // Act
+            var isMet = attribute.IsMet;
+
+            // Assert
+            Assert.False(isMet);
+        }
+
         private struct TestEnvironmentVariable : IEnvironmentVariable
         {
             public TestEnvironmentVariable(string value)

@@ -51,12 +51,26 @@ namespace Microsoft.AspNetCore.Testing.xunit
             _environmentVariable = environmentVariable;
         }
 
+        /// <summary>
+        /// Skips the test only if the value of the variable matches any of the supplied values. Default is <c>True</c>.
+        /// </summary>
+        public bool SkipOnMatch { get; set; } = true;
+
         public bool IsMet
         {
             get
             {
                 _currentValue = _environmentVariable.Get(_variableName);
-                return _values.Any(value => string.Compare(value, _currentValue, ignoreCase: true) == 0);
+                var hasMatched = _values.Any(value => string.Compare(value, _currentValue, ignoreCase: true) == 0);
+
+                if (SkipOnMatch)
+                {
+                    return hasMatched;
+                }
+                else
+                {
+                    return !hasMatched;
+                }
             }
         }
 
