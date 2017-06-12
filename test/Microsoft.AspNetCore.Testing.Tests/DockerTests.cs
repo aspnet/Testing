@@ -12,16 +12,10 @@ namespace Microsoft.AspNetCore.Testing
     {
         [ConditionalFact]
         [DockerOnly]
+        [Trait("Docker", "true")]
         public void DoesNotRunOnWindows()
         {
             Assert.False(RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
-        }
-
-        [ConditionalFact]
-        [DockerOnly]
-        public void RunsFromDockerHost()
-        {
-            Assert.False(true, "'docker' should not be available within the docker container.");
         }
     }
 }
