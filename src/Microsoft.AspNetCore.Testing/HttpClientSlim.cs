@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.AspNetCore.Testing
 {
-    // Lightweight version of HttpClient implemented using Socket and SslStream
+    /// <summary>
+    /// Lightweight version of HttpClient implemented using Socket and SslStream.
+    /// </summary>
     public static class HttpClientSlim
     {
         public static async Task<string> GetStringAsync(string requestUri, bool validateCertificate = true)
