@@ -102,7 +102,7 @@ namespace Microsoft.AspNetCore.Testing
             }
         }
 
-        private static async Task<Socket> GetSocket(Uri requestUri)
+        public static async Task<Socket> GetSocket(Uri requestUri)
         {
             var tcs = new TaskCompletionSource<Socket>();
 
