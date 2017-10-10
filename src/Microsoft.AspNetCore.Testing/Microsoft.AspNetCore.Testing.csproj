@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="xunit" Version="$(XunitPackageVersion)" />
+    <PackageReference Include="NETStandard.Library" Version="$(NETStandardLibraryPackageVersion)" Condition="'$(TargetFramework)' == 'net46'" />
   </ItemGroup>
 
 </Project>
