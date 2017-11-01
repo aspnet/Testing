@@ -1,43 +1,39 @@
-using System.Collections.Generic;
 using System.Diagnostics.Tracing;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Testing.Tracing;
 using Xunit;
 
 namespace Microsoft.AspNetCore.Testing.Tests
 {
-    public class CollectingEventListenerTest
+    // We are verifying here that when event listener tests are spread among multiple classes, they still
+    // work, even when run in parallel, as long as one
+    public class CollectingEventListenerTests
     {
-        [Fact]
-        public async Task ListenerCollectsEventsWrittenInCurrentAsyncContextDuringTest()
+        public abstract class TestBase : EventSourceTestBase
         {
-            // We create a bunch of tasks in order to verify that when multiple async tasks are running,
-            // the collector only captures events from the async context that initiated capturing of events.
-
-            var tasks = new Task<IReadOnlyList<EventWrittenEventArgs>>[10];
-            for (var i = 0; i < tasks.Length; i += 1)
+            [Fact]
+            public void CollectingEventListenerTest()
             {
-                tasks[i] = Task.Run(() =>
-                {
-                    return CollectingEventListener.CollectEvents(() =>
-                    {
-                        TestEventSource.Log.Test();
-                        TestEventSource.Log.TestWithPayload(42, 4.2);
-                    }, "Microsoft-AspNetCore-Testing-Test");
-                });
-            }
+                CollectFrom("Microsoft-AspNetCore-Testing-Test");
 
-            var eventses = await Task.WhenAll(tasks);
+                TestEventSource.Log.Test();
+                TestEventSource.Log.TestWithPayload(42, 4.2);
 
-            for (var i = 0; i < eventses.Length; i += 1)
-            {
-                EventAssert.Collection(eventses[i],
+                var events = GetEvents();
+                EventAssert.Collection(events,
                     EventAssert.Event(1, "Test", EventLevel.Informational),
                     EventAssert.Event(2, "TestWithPayload", EventLevel.Verbose)
                         .Payload("payload1", 42)
                         .Payload("payload2", 4.2));
             }
         }
+
+        public class A : TestBase { }
+        public class B : TestBase { }
+        public class C : TestBase { }
+        public class D : TestBase { }
+        public class E : TestBase { }
+        public class F : TestBase { }
+        public class G : TestBase { }
     }
 
     [EventSource(Name = "Microsoft-AspNetCore-Testing-Test")]

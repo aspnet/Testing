@@ -3,80 +3,58 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
-using System.Threading;
-using Xunit;
 
 namespace Microsoft.AspNetCore.Testing.Tracing
 {
-    // REVIEW: Also to go to some testing or shared-source assembly
-    // This can only collect from EventSources created AFTER this listener is created
     public class CollectingEventListener : EventListener
     {
         private ConcurrentQueue<EventWrittenEventArgs> _events = new ConcurrentQueue<EventWrittenEventArgs>();
-        private HashSet<string> _eventSources;
 
         private object _lock = new object();
-        private List<EventSource> _existingSources = new List<EventSource>();
 
-        // Used to track if the event was written on the active async context.
-        // We may want to allow this to be disabled for some tests (as in allow events from all async contexts to be collected).
-        // That's pretty easy to add later though.
-        private AsyncLocal<bool> _activeAsyncContext = new AsyncLocal<bool>();
+        private Dictionary<string, EventSource> _existingSources = new Dictionary<string, EventSource>(StringComparer.OrdinalIgnoreCase);
+        private HashSet<string> _requestedEventSources = new HashSet<string>();
 
-        public IReadOnlyList<EventWrittenEventArgs> EventsWritten => _events.ToArray();
-
-        public CollectingEventListener(params string[] eventSourceNames)
+        public void CollectFrom(string eventSourceName)
         {
-            lock (_lock)
+            lock(_lock)
             {
-                _eventSources = new HashSet<string>(eventSourceNames, StringComparer.Ordinal);
-
-                // Enable the sources that were created before we were constructed.
-                foreach (var existingSource in _existingSources.Where(s => _eventSources.Contains(s.Name)))
+                // Check if it's already been created
+                if(_existingSources.TryGetValue(eventSourceName, out var existingSource))
                 {
-                    EnableEvents(existingSource, EventLevel.Verbose, EventKeywords.All);
+                    // It has, so just enable it now
+                    CollectFrom(existingSource);
+                }
+                else
+                {
+                    // It hasn't, so queue this request for when it is created
+                    _requestedEventSources.Add(eventSourceName);
                 }
             }
-
-            // Mark this async context as "active" (will be ignored if isolateAsync is false)
-            _activeAsyncContext.Value = true;
         }
 
-        public static IReadOnlyList<EventWrittenEventArgs> CollectEvents(Action action, params string[] eventSourceNames) => CollectEvents(action, true, eventSourceNames);
+        public void CollectFrom(EventSource eventSource) => EnableEvents(eventSource, EventLevel.Verbose, EventKeywords.All);
 
-        public static IReadOnlyList<EventWrittenEventArgs> CollectEvents(Action action, bool isolateAsync, params string[] eventSourceNames)
-        {
-            var listener = new CollectingEventListener(eventSourceNames);
-            action();
-            return listener.EventsWritten;
-        }
+        public IReadOnlyList<EventWrittenEventArgs> GetEventsWritten() => _events.ToArray();
 
         protected override void OnEventSourceCreated(EventSource eventSource)
         {
-            if (_eventSources == null)
+            lock (_lock)
             {
-                lock (_lock)
-                {
-                    if (_eventSources == null)
-                    {
-                        _existingSources.Add(eventSource);
-                        return;
-                    }
-                }
-            }
+                // Add this to the list of existing sources for future CollectEventsFrom requests.
+                _existingSources[eventSource.Name] = eventSource;
 
-            if (_eventSources.Contains(eventSource.Name))
-            {
-                EnableEvents(eventSource, EventLevel.Verbose, EventKeywords.All);
+                // Check if we have a pending request to enable it
+                if (_requestedEventSources.Contains(eventSource.Name))
+                {
+                    CollectFrom(eventSource);
+                }
             }
         }
 
         protected override void OnEventWritten(EventWrittenEventArgs eventData)
         {
-            if (_activeAsyncContext.Value)
-            {
-                _events.Enqueue(eventData);
-            }
+            _events.Enqueue(eventData);
         }
     }
 }
