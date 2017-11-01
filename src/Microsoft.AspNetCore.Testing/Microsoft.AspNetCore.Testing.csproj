@@ -19,7 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Tracing\EventSourceTestCollection.cs">
+    <Compile Remove="contentFiles\cs\netstandard2.0\EventSourceTestCollection.cs" />
+    <Content Include="contentFiles\cs\netstandard2.0\EventSourceTestCollection.cs">
       <Pack>True</Pack>
       <PackagePath>contentFiles\cs\netstandard2.0\</PackagePath>
     </Content>
