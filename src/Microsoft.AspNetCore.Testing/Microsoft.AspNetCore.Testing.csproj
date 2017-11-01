@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Tracing\EventSourceTestCollection.cs">
+    <Content Include="Tracing\EventSourceTestCollection.cs">
       <Pack>True</Pack>
       <PackagePath>contentFiles\cs\netstandard2.0\</PackagePath>
-    </Compile>
+    </Content>
   </ItemGroup>
 
 </Project>
