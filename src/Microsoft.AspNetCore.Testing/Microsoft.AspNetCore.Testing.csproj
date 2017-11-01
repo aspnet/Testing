@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>Various helpers for writing tests that use ASP.NET Core.</Description>
@@ -16,6 +16,13 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <PackageReference Include="NETStandard.Library" Version="$(NETStandardLibraryPackageVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Tracing\EventSourceTestCollection.cs">
+      <Pack>True</Pack>
+      <PackagePath>contentFiles\cs\netstandard2.0\</PackagePath>
+    </Compile>
   </ItemGroup>
 
 </Project>
