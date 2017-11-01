@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Threading;
 using Xunit;
 
 namespace Microsoft.AspNetCore.Testing.Tracing
@@ -16,6 +17,11 @@ namespace Microsoft.AspNetCore.Testing.Tracing
 
         private object _lock = new object();
         private List<EventSource> _existingSources = new List<EventSource>();
+
+        // Used to track if the event was written on the active async context.
+        // We may want to allow this to be disabled for some tests (as in allow events from all async contexts to be collected).
+        // That's pretty easy to add later though.
+        private AsyncLocal<bool> _activeAsyncContext = new AsyncLocal<bool>();
 
         public IReadOnlyList<EventWrittenEventArgs> EventsWritten => _events.ToArray();
 
@@ -31,13 +37,19 @@ namespace Microsoft.AspNetCore.Testing.Tracing
                     EnableEvents(existingSource, EventLevel.Verbose, EventKeywords.All);
                 }
             }
+
+            // Mark this async context as "active" (will be ignored if isolateAsync is false)
+            _activeAsyncContext.Value = true;
         }
 
-        // REVIEW: I was going to do a Dictionary<string, List<EventWrittenEventArgs>> to group by event source name,
-        // but sometimes you might want to verify the interleaving of events from different sources. This is testing code that
-        // won't ship though so we can fiddle with this as we need.
-        public IReadOnlyList<EventWrittenEventArgs> GetEventsWrittenTo(string eventSourceName) =>
-            EventsWritten.Where(e => e.EventSource.Name.Equals(eventSourceName, StringComparison.Ordinal)).ToList();
+        public static IReadOnlyList<EventWrittenEventArgs> CollectEvents(Action action, params string[] eventSourceNames) => CollectEvents(action, true, eventSourceNames);
+
+        public static IReadOnlyList<EventWrittenEventArgs> CollectEvents(Action action, bool isolateAsync, params string[] eventSourceNames)
+        {
+            var listener = new CollectingEventListener(eventSourceNames);
+            action();
+            return listener.EventsWritten;
+        }
 
         protected override void OnEventSourceCreated(EventSource eventSource)
         {
@@ -61,7 +73,10 @@ namespace Microsoft.AspNetCore.Testing.Tracing
 
         protected override void OnEventWritten(EventWrittenEventArgs eventData)
         {
-            _events.Enqueue(eventData);
+            if (_activeAsyncContext.Value)
+            {
+                _events.Enqueue(eventData);
+            }
         }
     }
 }
