@@ -10,6 +10,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageTags>aspnetcore</PackageTags>
     <EnableApiCheck>false</EnableApiCheck>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
